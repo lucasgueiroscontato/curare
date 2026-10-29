@@ -1,4 +1,4 @@
-name: Gerar APK a partir do ZIP
+namename: Gerar APK a partir do ZIP
 on:
   workflow_dispatch:
 permissions:
@@ -6,7 +6,7 @@ permissions:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 40
     steps:
       - name: Baixar repositorio
@@ -18,12 +18,14 @@ jobs:
           DIR=$(dirname "$(find projeto -name settings.gradle.kts | head -1)")
           echo "PROJ=$DIR" >> "$GITHUB_ENV"
           echo "Projeto em: $DIR"
-      - uses: actions/setup-java@v4
+      - uses: actions/setup-java@v5
         with:
           distribution: temurin
           java-version: '17'
-      - uses: android-actions/setup-android@v3
-      - run: sdkmanager 'platforms;android-36' 'build-tools;35.0.0'
+      - name: Instalar plataforma Android 36
+        run: |
+          yes | sdkmanager --licenses > /dev/null || true
+          sdkmanager 'platforms;android-36' 'build-tools;35.0.0'
       - uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: '8.13'
