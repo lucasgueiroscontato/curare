@@ -1,4 +1,4 @@
-namename: Gerar APK a partir do ZIP
+name: Gerar APK a partir do ZIP
 on:
   workflow_dispatch:
 permissions:
